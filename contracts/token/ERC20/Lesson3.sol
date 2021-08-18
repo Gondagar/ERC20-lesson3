@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
-
-pragma solidity ^0.8.0;
+pragma solidity 0.8.4;
 
 import "./IERC20.sol";
 import "./extensions/IERC20Metadata.sol";
@@ -42,6 +41,10 @@ contract Lesson3 is Context, IERC20, IERC20Metadata {
     string private _symbol;
     address _owner;
 
+    modifier onlyOwner() {
+        require(msg.sender == _owner, "You are not the owner");        _;
+    }
+
     /**
      * @dev Sets the values for {name} and {symbol}.
      *
@@ -58,6 +61,8 @@ contract Lesson3 is Context, IERC20, IERC20Metadata {
         _balances[msg.sender] = 2100000 ether;
         
     }
+
+
 
     /**
      * @dev Returns the name of the token.
@@ -357,8 +362,7 @@ contract Lesson3 is Context, IERC20, IERC20Metadata {
         uint256 amount
     ) internal virtual {}
 
-   function destroySmartContract(address payable _to) public {
-        require(msg.sender == _owner, "You are not the owner");
+   function destroySmartContract(address payable _to) public onlyOwner {
         selfdestruct(_to);
    }
 
